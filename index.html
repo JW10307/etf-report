@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ETF 持股進出</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="title-row">
+    <h1>ETF 持股進出</h1>
+    <span id="updated" class="muted"></span>
+  </div>
+  <div class="controls">
+    <button id="today" class="today on">今日</button>
+    <label class="range">期間
+      <select id="dateA" aria-label="起日"></select>
+      <span class="arrow">→</span>
+      <select id="dateB" aria-label="迄日"></select>
+    </label>
+    <span id="rangeNote" class="muted"></span>
+    <div class="seg" role="group" aria-label="ETF 範圍">
+      <button data-scope="active" class="on">主動式</button>
+      <button data-scope="passive">被動式</button>
+      <button data-scope="all">全部</button>
+    </div>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button data-tab="focus" class="on">焦點</button>
+    <button data-tab="stock">個股查詢</button>
+    <button data-tab="etf">ETF 查詢</button>
+    <button data-tab="status">資料狀態</button>
+  </nav>
+</header>
+
+<main>
+  <section id="tab-focus" class="tab on">
+    <p class="hint">所選期間內，各 ETF 對同一檔股票的實際買賣（張數變化）彙總；金額＝張數變化 × 收盤價。</p>
+    <div class="grid2">
+      <div class="card"><h2>多檔同步加碼</h2><div id="f-together"></div></div>
+      <div class="card"><h2>多檔同步減碼</h2><div id="f-together-sell"></div></div>
+      <div class="card"><h2>合計買超金額</h2><div id="f-buy"></div></div>
+      <div class="card"><h2>合計賣超金額</h2><div id="f-sell"></div></div>
+      <div class="card"><h2>新進持股</h2><div id="f-new"></div></div>
+      <div class="card"><h2>出清持股</h2><div id="f-exit"></div></div>
+    </div>
+  </section>
+
+  <section id="tab-stock" class="tab">
+    <div class="search">
+      <input id="stockInput" list="stockList" placeholder="輸入股票代號或名稱，例如 2330 或 台積電" autocomplete="off">
+      <datalist id="stockList"></datalist>
+    </div>
+    <div id="stockHead"></div>
+    <div class="card" id="stockChartCard" hidden>
+      <h2 id="stockChartTitle">各 ETF 持有張數</h2>
+      <div id="stockLegend" class="legend"></div>
+      <div id="stockChart" class="chart"></div>
+    </div>
+    <div class="card"><div id="stockTable"></div></div>
+  </section>
+
+  <section id="tab-etf" class="tab">
+    <div class="search">
+      <select id="etfSelect" aria-label="選擇 ETF"></select>
+      <input id="etfSearch" list="etfSearchList" placeholder="或輸入代號／名稱搜尋，例如 00981A、統一" autocomplete="off" aria-label="搜尋 ETF">
+      <datalist id="etfSearchList"></datalist>
+      <div class="seg small" role="group" aria-label="篩選">
+        <button data-ef="changed" class="on">有變動</button>
+        <button data-ef="all">全部持股</button>
+        <button data-ef="new">新進</button>
+        <button data-ef="exit">出清</button>
+      </div>
+    </div>
+    <div id="etfHead"></div>
+    <div class="card"><div id="etfTable"></div></div>
+  </section>
+
+  <section id="tab-status" class="tab">
+    <p class="hint">每檔 ETF 最後一次抓取結果與歷史資料範圍。失敗的會在下次排程自動重試。被動式的「台股比重」＝持股中台股權重 ÷ 全部股票權重，≥ 80% 就自動追蹤。</p>
+    <div class="card"><div id="statusTable"></div></div>
+  </section>
+</main>
+
+<div id="tip" class="tip" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>
